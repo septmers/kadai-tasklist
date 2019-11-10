@@ -58,7 +58,7 @@ public class IndexServlet extends HttpServlet {
         request.setAttribute("task_count", task_count);
 
 
-        RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/index.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/tasks/index.jsp");
         rd.forward(request, response);
 
        em.close();
