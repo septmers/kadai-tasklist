@@ -22,6 +22,8 @@
                             </tr>
                         </tbody>
                     </table>
+                    <a href = "<c:url value = '/index'/>">一覧に戻る</a><br />
+                    <a href = "<c:url value = '/edit?id=${task.id}'/>"></a>
             </c:when>
             <c:otherwise>
                 <h2>お探しのデータは見つかりませんでした。</h2>
