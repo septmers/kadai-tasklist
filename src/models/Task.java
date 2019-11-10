@@ -48,6 +48,14 @@ public class Task{
         this.id = id;
     }
 
+    public String getConten(){
+        return content;
+    }
+
+    public void setContent(String content){
+        this.content = content;
+    }
+
     public Timestamp getCreated_at(){
         return created_at;
     }
