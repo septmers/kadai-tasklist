@@ -7,11 +7,23 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 
 @Entity
-@Table(name = "tasks")
+@NamedQueries({
+    //データベースのすべてのデータを取得する
+    @NamedQuery( name = "getAllTasks",
+                 query="SELECT t FROM Task AS t ORDER BY t.id DESC"
+            ),
+    //データベースのすべての件数を取得する
+    @NamedQuery( name = "getTasksCount",
+                query = "SELECT COUNT(t) FROM Task AS t")
+})
+
+@Table(name = "Task")
 public class Task{
     @Id
     @Column(name = "id")
