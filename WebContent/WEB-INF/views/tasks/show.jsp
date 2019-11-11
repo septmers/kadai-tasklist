@@ -3,7 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <c:import url="../layout/app.jsp">
     <c:param name ="content">
-        <c:choose>/
+        <c:choose>
             <c:when test="${task != null}">
                 <h2>ID：${task.id}のタスク詳細</h2>
                     <table>
@@ -14,16 +14,16 @@
                             </tr>
                             <tr>
                                 <th>作成日時</th>
-                            <td><fmt:formatDate value = "${task.created_at}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                <td><fmt:formatDate value = "${task.created_at}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                             </tr>
                             <tr>
                                 <th>更新日時</th>
-                            <td><fmt:formatDate value = "${task.updated_at}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                <td><fmt:formatDate value = "${task.updated_at}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                             </tr>
                         </tbody>
                     </table>
                     <a href = "<c:url value = '/index'/>">一覧に戻る</a><br />
-                    <a href = "<c:url value = '/edit?id=${task.id}'/>"></a>
+                    <a href = "<c:url value = '/edit?id=${task.id}'/>">このタスクを編集する</a>
             </c:when>
             <c:otherwise>
                 <h2>お探しのデータは見つかりませんでした。</h2>

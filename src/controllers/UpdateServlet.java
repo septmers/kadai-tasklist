@@ -2,8 +2,10 @@ package controllers;
 
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import models.Task;
+import models.validators.TaskValidator;
 import utils.DBUtil;
 
 
@@ -31,8 +34,6 @@ public class UpdateServlet extends HttpServlet {
             //更新したいデータのIDをフォームから取得し、データベースから取り出してDTOクラスに格納する
             Task t = em.find(Task.class, (Integer)request.getSession().getAttribute("task_id"));
 
-            //セッションスコープの不要になったデータを削除
-            request.getSession().removeAttribute("task_id");
 
             //フォームから受け取った値を更新する
             String content = request.getParameter("content");
@@ -42,7 +43,21 @@ public class UpdateServlet extends HttpServlet {
             Timestamp currentTime = new Timestamp(System.currentTimeMillis());
             t.setUpdated_at(currentTime);
 
-            //後ほどバリデーションを記述する
+            //バリデーションを実行
+            List<String> errors = TaskValidator.validate(t);
+            if(errors.size() > 0){
+
+                em.close();
+
+                //エラーがあった場合は、エラー文、_token、現在のTaskオブジェクトのデータをリクエストスコープに格納
+                request.setAttribute("errors", errors);
+                request.setAttribute("task", t);
+                request.setAttribute("_token", request.getSession().getId());
+
+                RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/tasks/edit.jsp");
+                rd.forward(request, response);
+
+            }else{
 
             //データベースを更新
             em.getTransaction().begin();
@@ -50,8 +65,12 @@ public class UpdateServlet extends HttpServlet {
             request.getSession().setAttribute("flush", "更新が完了しました。");   //セッションスコープにフラッシュメッセージをセット
             em.close();
 
+          //セッションスコープの不要になったデータを削除
+            request.getSession().removeAttribute("task_id");
+
             //indexサーブレットへリダイレクト
             response.sendRedirect(request.getContextPath() + "/index");
+            }
         }
     }
 }

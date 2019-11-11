@@ -48,7 +48,7 @@ public class Task{
         this.id = id;
     }
 
-    public String getConten(){
+    public String getContent(){
         return content;
     }
 
